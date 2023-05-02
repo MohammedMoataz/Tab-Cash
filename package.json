@@ -4,6 +4,7 @@
   "description": "Eid Hackathon",
   "main": "index.js",
   "repository": "https://github.com/MohammedMoataz/Tab-Cash.git",
+  "homepage": "https://github.com/MohammedMoataz/Tab-Cash#README.md",
   "author": "Mohammed Moataz",
   "license": "MIT",
   "type": "module",

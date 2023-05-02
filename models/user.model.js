@@ -26,6 +26,9 @@ export default (sequelize, DataTypes) => {
         age: {
             type: DataTypes.INTEGER
         },
+        dob: {
+            type: DataTypes.DATE
+        },
         address: {
             type: DataTypes.STRING(200)
         },
@@ -34,11 +37,23 @@ export default (sequelize, DataTypes) => {
         },
         phone: {
             type: DataTypes.STRING(11)
+        },
+        access_token: {
+            type: DataTypes.STRING(250)
+        },
+        _created_at: {
+            type: DataTypes.DATE
+        },
+        _updated_at: {
+            type: DataTypes.DATE
+        },
+        _deleted: {
+            type: DataTypes.BOOLEAN
         }
     }, {
         defaultScope: {
             attributes: {
-                exclude: ['password']
+                exclude: ['password', "_deleted"]
             }
         }
     })
