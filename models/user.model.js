@@ -38,8 +38,32 @@ export default (sequelize, DataTypes) => {
         phone: {
             type: DataTypes.STRING(11)
         },
-        access_token: {
-            type: DataTypes.STRING(250)
+        private_id: {
+            type: DataTypes.STRING(14)
+        },
+        photo: {
+            type: DataTypes.STRING(700)
+        },
+        wallet_address: {
+            type: DataTypes.STRING(50)
+        },
+        is_child: {
+            type: DataTypes.BOOLEAN
+        },
+        credit_card_num: {
+            type: DataTypes.STRING(16)
+        },
+        credit_card_pass: {
+            type: DataTypes.STRING(4)
+        },
+        credit_card_expire_date: {
+            type: DataTypes.DATE
+        },
+        restrictions: {
+            type: DataTypes.STRING(200)
+        },
+        limit: {
+            type: DataTypes.INTEGER
         },
         _created_at: {
             type: DataTypes.DATE

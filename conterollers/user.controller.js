@@ -1,55 +1,32 @@
-// import db from '../../database/database.js'
+import connectDB from "../db/nosql.db.js"
+import { v4 as uuidv4 } from 'uuid'
 
-// const USER = db.user
+import transaction from '../models/transactions.model.js'
 
-// export default {
-
-//     register: async (args, req) => {
-//         let email = args.email
-//         let password = args.password
-
-//         const new_user = new USER({
-//             email: email,
-//             password: region
-//         })
-
-//         return await new_region.save()
-//             .catch(err => console.error(err))
-//     },
-
-//     getAllByParentId: async (args, req) => {
-//         return await USER.findAll({
-//             where: { p_id: args.parent_id }
-//         })
-//             .then(res => res
-//                 .filter(region => region.dataValues.id > 1)
-//                 .map(region => region.dataValues))
-//             .catch(err => console.log(err))
-//     },
-
-//     getAll: async () => {
-//         return await USER.findAll()
-//             .then(res => res
-//                 .filter(region => region.dataValues.id > 1)
-//                 .map(region => region.dataValues))
-//             .catch(err => err)
-//     },
+export const connectMongoDB = async () => connectDB
+        .then(console.log('nosql database connected'))
+        .catch(console.error)
 
 
-    
+export const createTransaction = async (req, res) => {
+        const id = uuidv4()
+        const to = "0x00ca561d61e8e1d71c54"
+        const from = "0x561ca81b818d4b1681ac"
+        const timestamp = Date.now()
+        const amount = 100.0
 
-//     update: async (args, req) => {
-//         let id = args.id
-//         let region = args.region.trim()
+        const newtransaction = new transaction({
+                id,
+                to,
+                from,
+                timestamp,
+                amount,
+        })
 
-//         let isUpdated = await USER.update({
-//             region: region
-//         }, {
-//             where: { id: id }
-//         })
-//             .catch(err => console.error(err))
-
-//         return isUpdated !== 0
-//     }
-
-// }
+        newtransaction.save()
+                .then(data => {
+                        console.log({ data })
+                        res.send({ data })
+                })
+                .catch(console.error)
+}

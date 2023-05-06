@@ -28,4 +28,8 @@ db.sequelize = sequelize
 db.Sequelize = Sequelize
 db.user = User(sequelize, Sequelize)
 
+db.sequelize.authenticate()
+    .then(() => console.log(`sql database connected`))
+    .catch(err => console.log('ERROR: ', err.message))
+
 export default db
