@@ -21,7 +21,7 @@ export const register = async (req, res) => {
     let gender = user.gender
     let phone = user.phone
     let dob = user.dob
-    let private_id = user.privateId
+    let national_id = user.nationalId
     let photo = user.photo
     let wallet_address = user.walletAddress
     let is_child = user.isChild
@@ -46,7 +46,7 @@ export const register = async (req, res) => {
         gender,
         phone,
         _created_at: Date.now(),
-        private_id,
+        national_id,
         photo,
         wallet_address,
         is_child,

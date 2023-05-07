@@ -38,7 +38,7 @@ export default (sequelize, DataTypes) => {
         phone: {
             type: DataTypes.STRING(11)
         },
-        private_id: {
+        national_id: {
             type: DataTypes.STRING(14)
         },
         photo: {
