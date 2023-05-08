@@ -127,7 +127,7 @@ import {
 const router = Router()
 
 router.post('/registration', register)
-router.get('/login', login)
+router.post('/login', login)
 router.get('/refreshToken', refreshToken)
 
 export default router

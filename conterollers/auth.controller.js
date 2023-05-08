@@ -56,8 +56,8 @@ export const register = async (req, res) => {
 }
 
 export const login = async (req, res) => {
-    let email = req.query.email
-    let password = req.query.password
+    let email = req.body.email
+    let password = req.body.password
 
     if (!email || !password) {
         res.json({ message: "failed process", error: "missing required data", data: req.body })
