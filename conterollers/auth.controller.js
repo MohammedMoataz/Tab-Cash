@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid'
 import { config } from 'dotenv'
 
 import db from '../db/sql.db.js'
@@ -10,7 +11,8 @@ const USER = db.user
 export const register = async (req, res) => {
     let user = req.body
 
-    let parent_id = user.parentId
+    let id = uuidv4()
+    let parent_id = "root"
     let first_name = user.firstName
     let last_name = user.lastName
     let username = user.username
@@ -22,78 +24,78 @@ export const register = async (req, res) => {
     let phone = user.phone
     let dob = user.dob
     let national_id = user.nationalId
-    let photo = user.photo
-    let wallet_address = user.walletAddress
-    let is_child = user.isChild
-    let credit_card_num = user.creditCardNum
-    let credit_card_pass = user.creditCardPass
-    let credit_card_expire_date = user.creditCardExpireDate
-    let restrictions = user.restrictions
-    let limit = user.limit
 
-    let hashedPassword = await hashData(password)
+    if (!id || !parent_id || !first_name || !last_name || !username || !email || !password ||
+        !age || !address || !gender || !phone || !dob || !national_id) {
+        res.json({ message: "failed process", error: "missing required data", data: req.body })
 
-    let newUser = new USER({
-        parent_id,
-        first_name,
-        last_name,
-        username,
-        email,
-        password: hashedPassword,
-        age,
-        dob,
-        address,
-        gender,
-        phone,
-        _created_at: Date.now(),
-        national_id,
-        photo,
-        wallet_address,
-        is_child,
-        credit_card_num,
-        credit_card_pass,
-        credit_card_expire_date,
-        restrictions,
-        limit,
-    })
+    } else {
+        let hashedPassword = await hashData(password)
 
-    newUser.save()
-        .then(savedUser => res.json({ message: "sucessfull registration", data: savedUser }))
-        .catch(err => res.json({ message: "failed process", error: err.message }))
+        let newUser = new USER({
+            id,
+            parent_id,
+            first_name,
+            last_name,
+            username,
+            email,
+            password: hashedPassword,
+            age,
+            dob,
+            address,
+            gender,
+            phone,
+            national_id,
+            _created_at: Date.now(),
+        })
+
+        newUser.save()
+            .then(savedUser => res.json({ message: "sucessfull registration", data: savedUser }))
+            .catch(err => res.json({ message: "failed process", error: err.message }))
+    }
 }
 
 export const login = async (req, res) => {
     let email = req.query.email
     let password = req.query.password
 
-    let hashedPassword = await hashData(password)
+    if (!email || !password) {
+        res.json({ message: "failed process", error: "missing required data", data: req.body })
 
-    USER.findOne({
-        where: {
-            email: email,
-            password: hashedPassword
-        }
-    })
-        .then(async data => {
-            let loggedUser = data.dataValues
-            let accessToken = await generateAccessToken({ id: loggedUser.id, username: loggedUser.username })
+    } else {
 
-            USER.update({
-                access_token: accessToken,
-                _updated_at: Date.now(),
-            }, {
-                where: {
-                    id: loggedUser.id
-                }
+        let hashedPassword = await hashData(password)
+
+        USER.findOne({
+            where: {
+                email: email,
+                password: hashedPassword
+            }
+        })
+            .then(async data => {
+                let loggedUser = data.dataValues
+                let accessToken = await generateAccessToken({ id: loggedUser.id, username: loggedUser.username })
+
+                USER.update({
+                    access_token: accessToken,
+                    _updated_at: Date.now(),
+                }, {
+                    where: {
+                        id: loggedUser.id
+                    }
+                })
+                    .then(() => {
+                        loggedUser.access_token = accessToken
+                        res.json({ message: "sucessfull login", data: loggedUser })
+                    })
+                    .catch(console.error)
+
             })
-                .then(res.json({ message: "sucessfull login", accessToken, data: loggedUser }))
-                .catch(console.error)
-
-        })
-        .catch(err => {
-            console.log({ err })
-            res.json({ message: "Invalid email or password" })
-        })
+            .catch(err => {
+                console.log({ err })
+                res.json({ message: "Invalid email or password" })
+            })
+    }
 }
 
 export const refreshToken = async (req, res) => {

@@ -1,12 +1,17 @@
-import { connect } from 'mongoose'
+import { MongoClient } from 'mongodb'
+
 import { config } from 'dotenv'
 
 config()
 
 const mongo_url = process.env.MONGODB_URL
-const connectDB = connect(mongo_url, {
+
+const client = new MongoClient(mongo_url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
 
-export default connectDB
+// Connect to the MongoDB cluster
+await client.connect()
+
+export default client

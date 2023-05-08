@@ -1,13 +1,13 @@
 import { Router } from 'express'
 
 import {
-    connectMongoDB,
+    addChild,
     createTransaction
 } from '../conterollers/user.controller.js'
 
 const router = Router()
 
-router.get('/connect', connectMongoDB)
+router.post('/addChild', addChild)
 router.post('/send', createTransaction)
 
 export default router

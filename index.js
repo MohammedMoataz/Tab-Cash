@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import bodyParser from 'body-parser'
+import helmet from 'helmet'
 import swaggerJsdoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
 
@@ -8,10 +8,10 @@ import { config } from 'dotenv'
 
 import authRoutes from "./routes/auth.routes.js"
 import userRoutes from "./routes/user.routes.js"
-import { connectMongoDB } from './conterollers/user.controller.js'
 
 config()
 
+// swagger options configurationF
 const options = {
     explorer: true,
     failOnErrors: true,
@@ -42,10 +42,15 @@ const swaggerSpec = swaggerJsdoc(options)
 const PORT = process.env.PORT || 8000
 const app = express()
 
+// Secure headers
+app.use(helmet())
 app.use(cors())
-app.use(express.json())
-app.use(bodyParser.urlencoded({ extended: false }))
 
+// Middleware for cookies
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
+// Routes
 app.use('/', authRoutes)
 app.use('/user', userRoutes)
 app.use(
@@ -54,18 +59,16 @@ app.use(
     swaggerUi.setup(swaggerSpec)
 )
 
-await connectMongoDB()
-
-//  http://localhost:4000/
+// http://localhost:4000/
 app.listen(PORT, () => {
     console.log(`Server is Listening on http://localhost:${PORT}`)
 })
 
 // Global Error Handler. IMPORTANT function params MUST start with err
 app.use((err, req, res, next) => {
-    console.log(err.stack);
-    console.log(err.name);
-    console.log(err.code);
+    console.log(err.stack)
+    console.log(err.name)
+    console.log(err.code)
 
     res.status(500).json({
         message: err,

@@ -1,12 +1,11 @@
 export default (sequelize, DataTypes) => {
     return sequelize.define("users", {
         id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
+            type: DataTypes.STRING(50),
+            primaryKey: true
         },
         parent_id: {
-            type: DataTypes.INTEGER
+            type: DataTypes.STRING(50)
         },
         first_name: {
             type: DataTypes.STRING(100)
@@ -44,8 +43,8 @@ export default (sequelize, DataTypes) => {
         photo: {
             type: DataTypes.STRING(700)
         },
-        wallet_address: {
-            type: DataTypes.STRING(50)
+        access_token: {
+            type: DataTypes.STRING(250)
         },
         is_child: {
             type: DataTypes.BOOLEAN
@@ -56,13 +55,13 @@ export default (sequelize, DataTypes) => {
         credit_card_pass: {
             type: DataTypes.STRING(4)
         },
-        credit_card_expire_date: {
+        credit_card_expiration_date: {
             type: DataTypes.DATE
         },
         restrictions: {
             type: DataTypes.STRING(200)
         },
-        limit: {
+        balance: {
             type: DataTypes.INTEGER
         },
         _created_at: {
