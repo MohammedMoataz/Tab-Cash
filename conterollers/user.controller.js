@@ -121,8 +121,6 @@ export const createTransaction = async (req, res) => {
                 timestamp,
             })
 
-            mongoClient.close()
-
             res.send({ fromTx, toTx })
 
         } else {
@@ -134,7 +132,6 @@ export const createTransaction = async (req, res) => {
 
 export const searchByUsername = (req, res) => {
     let username = req.query.username
-    console.log({ username })
 
     if (!username) {
         res.json({ message: "missing required data", username })
@@ -148,7 +145,6 @@ export const searchByUsername = (req, res) => {
 
 export const getTransactions = async (req, res) => {
     let id = req.query.id
-    console.log({ id })
 
     if (!id) {
         res.json({ message: "missing required data", id })
@@ -157,10 +153,9 @@ export const getTransactions = async (req, res) => {
         res.json({ message: "invalid user id", id })
 
     } else {
-        let userCollection = NOSQLDB.collection(id).find({}).toArray()
+        let userTransactions = await NOSQLDB.collection(id).find({}).toArray()
 
-        console.log({ userCollection })
-        res.send({ userCollection })
-
+        console.log({ userTransactions })
+        res.send({ userTransactions })
     }
 }
