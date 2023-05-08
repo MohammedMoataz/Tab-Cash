@@ -12,6 +12,8 @@ const client = new MongoClient(mongo_url, {
 })
 
 // Connect to the MongoDB cluster
-await client.connect()
+client.connect()
+    .then(console.log("nosql database connected"))
+    .catch(console.error)
 
 export default client

@@ -47,7 +47,7 @@ export const addChild = async (req, res) => {
         let hashedPassword = await hashData(password)
 
         let newUser = new USER({
-            id,
+            _id,
             parent_id,
             first_name,
             last_name,
@@ -68,6 +68,7 @@ export const addChild = async (req, res) => {
 }
 
 export const createTransaction = async (req, res) => {
+    let _id = uuidv4()
     let from = req.body.from
     let to = req.body.to
     let amount = req.body.amount
@@ -84,10 +85,17 @@ export const createTransaction = async (req, res) => {
         })
 
     } else if (isNaN(amount)) {
-        res.json({ message: "invalid amount", data: req.body })
+        res.json({ message: "invalid amount", data: amount })
 
     } else if (!uuidValidateV4(from) || !uuidValidateV4(to)) {
-        res.json({ message: "invalid users", data: req.body })
+        res.json({
+            message: "invalid users",
+            data: {
+                from,
+                to,
+                amount,
+            }
+        })
 
     } else {
         let fromUser = await USER.findOne({ where: { id: from } })
@@ -98,17 +106,19 @@ export const createTransaction = async (req, res) => {
             let toCollection = NOSQLDB.collection(`${to}`)
 
             let fromTx = await fromCollection.insertOne({
-                from: from,
-                to: to,
-                amount: amount,
-                timestamp: timestamp
+                _id,
+                from,
+                to,
+                amount,
+                timestamp,
             })
 
             let toTx = await toCollection.insertOne({
-                from: from,
-                to: to,
-                amount: amount,
-                timestamp: timestamp
+                _id,
+                from,
+                to,
+                amount,
+                timestamp,
             })
 
             mongoClient.close()
@@ -119,5 +129,38 @@ export const createTransaction = async (req, res) => {
             res.json({ message: "invalid users", data: { from: fromUser, to: toUser } })
 
         }
+    }
+}
+
+export const searchByUsername = (req, res) => {
+    let username = req.query.username
+    console.log({ username })
+
+    if (!username) {
+        res.json({ message: "missing required data", username })
+
+    } else {
+        USER.findOne({ where: { username } })
+            .then(user => res.json({ message: "sucessfull search", data: user }))
+            .catch(err => res.json({ message: "failed process", error: err.message }))
+    }
+}
+
+export const getTransactions = async (req, res) => {
+    let id = req.query.id
+    console.log({ id })
+
+    if (!id) {
+        res.json({ message: "missing required data", id })
+
+    } else if (!uuidValidateV4(id)) {
+        res.json({ message: "invalid user id", id })
+
+    } else {
+        let userCollection = NOSQLDB.collection(id).find({}).toArray()
+
+        console.log({ userCollection })
+        res.send({ userCollection })
+
     }
 }
