@@ -63,7 +63,6 @@ export const login = async (req, res) => {
         res.json({ message: "failed process", error: "missing required data", data: req.body })
 
     } else {
-
         let hashedPassword = await hashData(password)
 
         USER.findOne({
@@ -95,28 +94,5 @@ export const login = async (req, res) => {
                 console.log({ err })
                 res.json({ message: "Invalid email or password" })
             })
-    }
-}
-
-export const refreshToken = async (req, res) => {
-    try {
-        let token = req.query.token
-
-        if (!token)
-            throw new Error("refresh token missing")
-
-        let decoded = refreshAccessToken(token)
-        console.log({ decoded })
-
-        if (decoded.access_token != token) {
-            throw new Error("token is not valid")
-        }
-
-        const accesstoken = await generateAccessToken({ id: decoded.id, username: decoded.username })
-
-        res.json({ message: "refresh token successed", accesstoken })
-
-    } catch (error) {
-        res.json({ message: "failed process", error: error.message })
     }
 }
