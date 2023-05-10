@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { config } from 'dotenv'
 
 import db from '../db/sql.db.js'
-import { generateAccessToken, hashData, refreshAccessToken } from '../utils/utils.js'
+import { generateAccessToken, hashData } from '../utils/utils.js'
 
 config()
 
@@ -11,47 +11,74 @@ const USER = db.user
 export const register = async (req, res) => {
     let user = req.body
 
-    let id = uuidv4()
-    let parent_id = "root"
     let first_name = user.firstName
     let last_name = user.lastName
     let username = user.username
     let email = user.email
     let password = user.password
-    let age = user.age
     let address = user.address
     let gender = user.gender
     let phone = user.phone
     let dob = user.dob
     let national_id = user.nationalId
 
-    if (!id || !parent_id || !first_name || !last_name || !username || !email || !password ||
-        !age || !address || !gender || !phone || !dob || !national_id) {
-        res.json({ message: "failed process", error: "missing required data", data: req.body })
-
-    } else {
-        let hashedPassword = await hashData(password)
-
-        let newUser = new USER({
-            id,
-            parent_id,
-            first_name,
-            last_name,
-            username,
-            email,
-            password: hashedPassword,
-            age,
-            dob,
-            address,
-            gender,
-            phone,
-            national_id,
-            _created_at: Date.now(),
+    if (!first_name || !last_name || !username || !email || !password ||
+        !address || !gender || !phone || !dob || !national_id) {
+        res.json({
+            error: "missing required data",
+            data: {
+                first_name,
+                last_name,
+                username,
+                email,
+                password,
+                address,
+                gender,
+                phone,
+                dob,
+                national_id,
+            }
         })
 
-        newUser.save()
-            .then(savedUser => res.json({ message: "sucessfull registration", data: savedUser }))
-            .catch(err => res.json({ message: "failed process", error: err.message }))
+    } else {
+        const myRe = /(@[a-zA-Z_.][a-zA-Z].[a-zA-Z]{2,3})/g
+        const flag = myRe.test(email)
+
+        const date = dob.split("-")
+        const year = new Date(dob).getFullYear() - 1700
+        const month = date[1]
+        const day = date[2]
+        const isNationalIdValid =
+            national_id.substring(0, 3) == year &&
+            national_id.substring(3, 5) == month &&
+            national_id.substring(5, 7) == day
+
+        if (flag && isNationalIdValid) {
+            let hashedPassword = await hashData(password)
+
+            let newUser = new USER({
+                id: uuidv4(),
+                parent_id: "root",
+                first_name,
+                last_name,
+                username,
+                email,
+                password: hashedPassword,
+                dob,
+                address,
+                gender,
+                phone,
+                national_id,
+                _created_at: Date.now(),
+            })
+
+            newUser.save()
+                .then(savedUser => res.json({ message: "sucessfull registration", data: savedUser }))
+                .catch(err => res.json({ error: err.message }))
+
+        } else {
+            res.json({ error: "Invalid data" })
+        }
     }
 }
 
@@ -73,7 +100,7 @@ export const login = async (req, res) => {
         })
             .then(async data => {
                 let loggedUser = data.dataValues
-                let accessToken = await generateAccessToken({ id: loggedUser.id, username: loggedUser.username })
+                let accessToken = await generateAccessToken({ parentId: loggedUser.parent_id, username: loggedUser.username })
 
                 USER.update({
                     access_token: accessToken,
@@ -83,11 +110,12 @@ export const login = async (req, res) => {
                         id: loggedUser.id
                     }
                 })
-                    .then(() => {
+                    .then((isUpdated) => {
                         loggedUser.access_token = accessToken
                         res.json({ message: "sucessfull login", data: loggedUser })
                     })
                     .catch(console.error)
+
 
             })
             .catch(err => {

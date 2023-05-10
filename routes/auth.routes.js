@@ -2,7 +2,7 @@
  * @swagger
  * components:
  *   schemas:
- *     Parent:
+ *     User:
  *       type: object
  *       required:
  *         - firstName
@@ -66,6 +66,7 @@
  *         nationalId: "01234567890123"
  *         dob: 2000-01-01
  *         accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJtb2hhbW1lZGlicmFoaW0iLCJpYXQiOjE2ODMwNTA3NzQsImV4cCI6MTY4MzEzNzE3NH0.ICGD8WejvrcSHKv0b7gqZeuSUy1aEE05AJHZqKIRmeU
+ *
  *     Child:
  *       type: object
  *       required:
@@ -117,6 +118,7 @@
  *         gender: Male
  *         dob: 2018-01-01
  *         accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJtb2hhbW1lZGlicmFoaW0iLCJpYXQiOjE2ODMwNTA3NzQsImV4cCI6MTY4MzEzNzE3NH0.ICGD8WejvrcSHKv0b7gqZeuSUy1aEE05AJHZqKIRmeU
+ *
  *     Card:
  *       type: object
  *       required:
@@ -147,6 +149,7 @@
  *         creditCardExpirationDate: 2023-01-01
  *         restrictions: Food, Drinks - or null for parent
  *         balance: 1000.0
+ * 
  *     LoginInput:
  *       type: object
  *       required:
@@ -155,13 +158,36 @@
  *       properties:
  *         email:
  *           type: string
- *           description: Parent email
+ *           description: User email
  *         password:
  *           type: string
- *           description: Parent password
+ *           description: User password
  *       example:
  *         email: mohammedmoataz@gmail.com
  *         password: "123456"
+ * 
+ *     Transaction:
+ *       type: object
+ *       required:
+ *         - from
+ *       properties:
+ *         from:
+ *           type: string
+ *           description: transaction from
+ *         to:
+ *           type: string
+ *           description: transaction to
+ *         amount:
+ *           type: integer
+ *           description: amount
+ *         timestamp:
+ *           type: date
+ *           description: timestamp
+ *       example:
+ *         from: 37e0cb8b-6055-4b94-b649-9c72dca90bc2
+ *         to: 8a103566-cc53-4a13-bd10-709bc3a3f260
+ *         amount: 100.0
+ *         timestamp: 2023-01-01
  */
 /** 
  * @swagger
@@ -175,14 +201,14 @@
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Parent'
+ *             $ref: '#/components/schemas/User'
  *     responses:
  *       200:
- *         description: The registered Parent.
+ *         description: The registered User.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Parent'
+ *               $ref: '#/components/schemas/User'
  *       500:
  *         description: Some server error
  * 

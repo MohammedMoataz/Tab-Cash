@@ -22,9 +22,6 @@ export default (sequelize, DataTypes) => {
         password: {
             type: DataTypes.STRING(200)
         },
-        age: {
-            type: DataTypes.INTEGER
-        },
         dob: {
             type: DataTypes.DATE
         },

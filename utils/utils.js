@@ -27,16 +27,7 @@ export const hashData = async data => {
  * @returns the access token
  */
 export const generateAccessToken = async obj =>
-    jwt.sign(obj, process.env.JWT_SECRET, { expiresIn: "1d" })
-
-/**
- * refresh the token for the current user
- * 
- * @param {String} token expired token which will be refreshed
- * @returns the refresh access token
- */
-export const refreshAccessToken = token =>
-    jwt.verify(token, process.env.REFRESH_TOKEN_SECRET)
+    jwt.sign(obj, process.env.JWT_SECRET, { expiresIn: "10h" })
 
 /**
  * validate the uuid of the current user

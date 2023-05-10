@@ -16,13 +16,12 @@ export const addChild = async (req, res) => {
     let last_name = user.lastName
     let username = user.username
     let password = user.password
-    let age = user.age
     let address = user.address
     let gender = user.gender
     let dob = user.dob
 
     if (!parent_id || !first_name || !last_name || !username ||
-        !password || !age || !address || !gender || !dob) {
+        !password || !address || !gender || !dob) {
         res.json({
             error: "missing required data",
             data: {
@@ -31,7 +30,6 @@ export const addChild = async (req, res) => {
                 last_name,
                 username,
                 password,
-                age,
                 address,
                 gender,
                 dob,
@@ -48,13 +46,12 @@ export const addChild = async (req, res) => {
         let hashedPassword = await hashData(password)
 
         let newUser = new USER({
-            _id: uuidv4(),
+            id: uuidv4(),
             parent_id,
             first_name,
             last_name,
             username,
             password: hashedPassword,
-            age,
             address,
             gender,
             dob,
@@ -107,7 +104,7 @@ export const getAllChildren = async (req, res) => {
 
     } else {
         USER.findAll({ where: { parent_id: parentId } })
-            .then(user => res.json({ message: "all children added successfully", data: user }))
+            .then(user => res.json({ message: "get all children successfully", data: user }))
             .catch(err => res.json({ error: err.message }))
     }
 }
