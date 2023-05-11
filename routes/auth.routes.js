@@ -10,7 +10,6 @@
  *         - username
  *         - email
  *         - password
- *         - age
  *         - address
  *         - gender
  *         - phone
@@ -32,9 +31,6 @@
  *         password:
  *           type: string
  *           description: user's password
- *         age:
- *           type: string
- *           description: user's age
  *         address:
  *           type: string
  *           description: user's address
@@ -59,13 +55,11 @@
  *         username: mohammedmoataz
  *         email: mohammedmoataz@gmail.com
  *         password: "123456"
- *         age: 22
  *         address: Egypt
  *         gender: Male
  *         phone: "01234567890"
  *         nationalId: "01234567890123"
  *         dob: 2000-01-01
- *         accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJtb2hhbW1lZGlicmFoaW0iLCJpYXQiOjE2ODMwNTA3NzQsImV4cCI6MTY4MzEzNzE3NH0.ICGD8WejvrcSHKv0b7gqZeuSUy1aEE05AJHZqKIRmeU
  *
  *     Child:
  *       type: object
@@ -74,7 +68,6 @@
  *         - lastName
  *         - username
  *         - password
- *         - age
  *         - address
  *         - gender
  *         - dob
@@ -117,7 +110,6 @@
  *         address: Egypt
  *         gender: Male
  *         dob: 2018-01-01
- *         accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJtb2hhbW1lZGlicmFoaW0iLCJpYXQiOjE2ODMwNTA3NzQsImV4cCI6MTY4MzEzNzE3NH0.ICGD8WejvrcSHKv0b7gqZeuSUy1aEE05AJHZqKIRmeU
  *
  *     Card:
  *       type: object
