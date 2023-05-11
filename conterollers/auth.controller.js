@@ -53,7 +53,7 @@ export const register = async (req, res) => {
             national_id.substring(3, 5) === month &&
             national_id.substring(5, 7) === day
 
-        if (flag && national_id.length == 16 && phone.length == 11 && isNationalIdValid) {
+        if (flag && national_id.length == 14 && phone.length == 11 && isNationalIdValid) {
             let hashedPassword = await hashData(password)
 
             let newUser = new USER({
