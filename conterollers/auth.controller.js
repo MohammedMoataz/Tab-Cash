@@ -53,7 +53,7 @@ export const register = async (req, res) => {
             national_id.substring(3, 5) == month &&
             national_id.substring(5, 7) == day
 
-        if (flag && isNationalIdValid) {
+        if (flag && national_id.length == 16 && isNationalIdValid) {
             let hashedPassword = await hashData(password)
 
             let newUser = new USER({
@@ -100,7 +100,10 @@ export const login = async (req, res) => {
         })
             .then(async data => {
                 let loggedUser = data.dataValues
-                let accessToken = await generateAccessToken({ parentId: loggedUser.parent_id, username: loggedUser.username })
+                let accessToken = await generateAccessToken({
+                    parentId: loggedUser.parent_id,
+                    username: loggedUser.username
+                })
 
                 USER.update({
                     access_token: accessToken,
