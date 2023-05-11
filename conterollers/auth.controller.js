@@ -49,9 +49,9 @@ export const register = async (req, res) => {
         const month = date[1]
         const day = date[2]
         const isNationalIdValid =
-            national_id.substring(0, 3) == year &&
-            national_id.substring(3, 5) == month &&
-            national_id.substring(5, 7) == day
+            national_id.substring(0, 3) === year.toString() &&
+            national_id.substring(3, 5) === month &&
+            national_id.substring(5, 7) === day
 
         if (flag && national_id.length == 16 && isNationalIdValid) {
             let hashedPassword = await hashData(password)
