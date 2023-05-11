@@ -170,6 +170,8 @@
  *       type: object
  *       required:
  *         - from
+ *         - to
+ *         - amount
  *       properties:
  *         from:
  *           type: string

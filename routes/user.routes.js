@@ -41,6 +41,26 @@
  *       404:
  *         description: The user was not found
  * 
+ * /user/sendTransaction:
+ *   post:
+ *     summary: Send Transaction
+ *     tags: [Send Transaction]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Transaction'
+ *     responses:
+ *       200:
+ *         description: Send Transaction
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Transaction'
+ *       404:
+ *         description: The user was not found
+ * 
  * /user/get:
  *   get:
  *     summary: Get User
