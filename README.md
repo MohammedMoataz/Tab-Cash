@@ -20,7 +20,7 @@ The Tab Cash backend provides the following endpoints:
 
 ## Documentation
 Detailed documentation for the Tab Cash project:
-- Presentation: [Tab Case Presentation](https://docs.google.com/presentation/d/1Y5PxaHhdN5fusXXhPzUYh5BvzrisiF3BW8nptjDh3Gs/edit?usp=sharing)
+- Presentation: [Tab Cash Presentation](https://docs.google.com/presentation/d/1Y5PxaHhdN5fusXXhPzUYh5BvzrisiF3BW8nptjDh3Gs/edit?usp=sharing)
 - UI-UX Design:
    - [Mobile App](https://www.figma.com/proto/Kt8yRtouY0rHIIrPjcbztV/Tab-Cash?node-id=342-752&t=sPTQOFCioslQjsrd-0&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=167%3A804)
    - [Website](https://www.figma.com/proto/Kt8yRtouY0rHIIrPjcbztV/Tab-Cash?node-id=415-739&t=sPTQOFCioslQjsrd-0&scaling=min-zoom&page-id=54%3A927&starting-point-node-id=415%3A739)
